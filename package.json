@@ -1,0 +1,12 @@
+{
+  "name": "pandia-vip-owner-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PANDIA VIP OWNER website with a persistent server-side result collector.",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
