@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head><body><meta charset="UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>PANDIA VIP OWNER</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet">
+<style>
+  :root {
+  --primary: #6366F1;
+  --secondary: #22D3EE;
+  --success: #10B981;
+  --danger: #EF4444;
+  --bg: #F8FAFC;
+  --card: #FFFFFF;
+  --text: #0F172A;
+  --text-dim: #64748B;
+  --shadow: 0 12px 40px -8px rgba(0, 0, 0, 0.08);
+  --grad: linear-gradient(135deg, #6366F1 0%, #A855F7 100%);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+  body { background: var(--bg); color: var(--text); overflow-x: hidden; line-height: 1.5; }
+  /* App Layout */
+  #app { max-width: 500px; margin: 0 auto; min-height: 100vh; position: relative; padding-bottom: 100px; background: var(--bg); }
+  /* Header with Logo */
+  .app-header {
+  padding: 20px 20px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border-bottom: 1px solid #E2E8F0;
+  }
+  .logo-small {
+  width: 40px; height: 40px;
+  background: var(--grad);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 8px 16px rgba(99, 102, 241, 0.2);
+  }
+  .app-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  }
+  .nav-bar {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 440px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  display: flex;
+  justify-content: space-around;
+  padding: 15px;
+  border-radius: 24px;
+  border: 1px solid white;
+  box-shadow: var(--shadow);
+  z-index: 1000;
+  }
+  .nav-item {
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+  }
+  .nav-item.active { color: var(--primary); }
+  /* Period & Timer */
+  .header { padding: 30px 20px; display: flex; justify-content: space-between; align-items: center; }
+  .period-info h2 { font-family: 'JetBrains Mono', monospace; font-size: 1.8rem; font-weight: 800; letter-spacing: -1px; }
+  .period-info p { font-size: 0.75rem; font-weight: 800; color: var(--text-dim); letter-spacing: 1.5px; }
+  .timer-box { position: relative; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; }
+  .timer-text { position: absolute; font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 1.4rem; color: var(--text); }
+  .timer-svg { transform: rotate(-90deg); width: 80px; height: 80px; }
+  .timer-circle-bg { fill: none; stroke: #E2E8F0; stroke-width: 6; }
+  .timer-circle-prog { fill: none; stroke: var(--primary); stroke-width: 6; stroke-linecap: round; stroke-dasharray: 226; transition: stroke-dashoffset 1s linear; }
+  /* Pages & Cards */
+  .page { display: none; padding: 0 20px; animation: slideUp 0.5s ease forwards; }
+  .page.active { display: block; }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .predict-card {
+  background: var(--grad);
+  border-radius: 32px;
+  padding: 40px 20px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 20px 40px -10px rgba(99, 102, 241, 0.4);
+  margin-bottom: 25px;
+  transition: background 0.3s ease;
+  }
+  .predict-val { font-size: 4rem; font-weight: 900; margin: 10px 0; letter-spacing: 2px; }
+  /* Results & History List */
+  .card-title {
+  font-size: 0.85rem; font-weight: 800; margin-bottom: 15px;
+  display: flex; align-items: center; gap: 8px; color: var(--text-dim);
+  justify-content: space-between;
+  }
+  .info-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 15px 0; border-bottom: 1px solid #F1F5F9;
+  }
+  .info-row:last-child { border-bottom: none; }
+  .info-label { font-size: 0.75rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; }
+  .info-value { font-size: 0.85rem; font-weight: 800; color: var(--text); }
+  .result-item {
+  background: white;
+  padding: 16px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  border: 1px solid #F1F5F9;
+  margin-bottom: 10px;
+  }
+  .res-period { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: var(--text-dim); }
+  .res-num { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; font-weight: 800; color: var(--primary); }
+  .badge { padding: 6px 12px; border-radius: 10px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; }
+  .badge-win { background: #DCFCE7; color: #166534; }
+  .badge-loss { background: #FEE2E2; color: #991B1B; }
+  .badge-pending { background: #EEF2FF; color: #4F46E5; }
+  @keyframes rotate-hourglass { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  .rotating-emoji { display: inline-block; animation: rotate-hourglass 2s linear infinite; }
+  /* Strategy Tags */
+  .strategy-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  color: var(--primary);
+  }
+  .regime-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.6rem;
+  font-weight: 800;
+  background: rgba(34, 211, 238, 0.1);
+  border: 1px solid rgba(34, 211, 238, 0.2);
+  color: #0891B2;
+  }
+  /* Signal Strength Meter */
+  .signal-meter {
+  height: 6px;
+  background: #E2E8F0;
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 15px 0;
+  }
+  .signal-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  transition: width 0.5s ease;
+  }
+  /* Stats Grid */
+  .stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 15px;
+  }
+  .stat-box {
+  background: white;
+  border-radius: 16px;
+  padding: 15px;
+  text-align: center;
+  border: 1px solid #F1F5F9;
+  }
+  .stat-box .value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+  }
+  .stat-box .label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-top: 5px;
+  }
+  /* Utility */
+  .btn-tg {
+  width: 100%;
+  background: #0088cc;
+  color: white;
+  padding: 18px;
+  border-radius: 20px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: 800;
+  margin-top: 10px;
+  }
+  .btn-exit {
+  width: 100%;
+  background: #FEE2E2;
+  color: #EF4444;
+  padding: 18px;
+  border-radius: 20px;
+  border: none;
+  font-weight: 800;
+  margin-top: 15px;
+  cursor: pointer;
+  }
+  .dev-contact {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  }
+  .dev-btn {
+  flex: 1;
+  background: white;
+  color: var(--primary);
+  padding: 15px;
+  border-radius: 16px;
+  text-decoration: none;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border: 1.5px solid var(--primary);
+  transition: all 0.2s;
+  }
+  .dev-btn:hover {
+  background: var(--primary);
+  color: white;
+  }
+  /* Notification */
+  .notification {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  background: var(--primary);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 40px;
+  font-weight: 700;
+  box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+  z-index: 2000;
+  transition: transform 0.3s ease;
+  max-width: 300px;
+  text-align: center;
+  }
+  .notification.show {
+  transform: translateX(-50%) translateY(0);
+  }
+  .notification.win {
+  background: var(--success);
+  }
+  .notification.loss {
+  background: var(--danger);
+  }
+  .notification.jackpot {
+  background: #FBBF24;
+  color: #0F172A;
+  }
+</style>
+<div id="app">
+  <div class="notification" id="notification">Prediction Updated</div>
+  <div class="app-header">
+    <div class="logo-small">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="brain-circuit" aria-hidden="true" size="24" class="lucide lucide-brain-circuit"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"></path><path d="M9 13a4.5 4.5 0 0 0 3-4"></path><path d="M6.003 5.125A3 3 0 0 0 6.401 6.5"></path><path d="M3.477 10.896a4 4 0 0 1 .585-.396"></path><path d="M6 18a4 4 0 0 1-1.967-.516"></path><path d="M12 13h4"></path><path d="M12 18h6a2 2 0 0 1 2 2v1"></path><path d="M12 8h8"></path><path d="M16 8V5a2 2 0 0 1 2-2"></path><circle cx="16" cy="13" r=".5"></circle><circle cx="18" cy="3" r=".5"></circle><circle cx="20" cy="21" r=".5"></circle><circle cx="20" cy="8" r=".5"></circle></svg>
+    </div>
+    <span class="app-title"> 𝐏𝐀𝐍𝐃𝗜𝐀シ︎ VIP OWNER</span>
+  </div>
+  <div class="header">
+    <div class="period-info">
+      <p>ACTIVE NODE</p>
+      <h2 id="period-display">------</h2>
+    </div>
+    <div class="timer-box">
+      <svg class="timer-svg">
+        <circle class="timer-circle-bg" cx="40" cy="40" r="36"></circle>
+        <circle class="timer-circle-prog" id="timer-bar" cx="40" cy="40" r="36" style="stroke-dashoffset: 169.5;"></circle>
+      </svg>
+      <div class="timer-text" id="timer-text">15</div>
+    </div>
+  </div>
+  <section id="page-home" class="page active">
+    <div class="predict-card" id="predict-card">
+      <p style="font-size: 0.75rem; font-weight: 700; opacity: 0.8; letter-spacing: 2px;">NEURAL PREDICTION</p>
+      <div style="display: flex; align-items: baseline; justify-content: center; gap: 10px;">
+        <h1 class="predict-val" id="predict-val">WAIT</h1>
+        <span style="font-size: 1.5rem; font-weight: 700;" id="predict-number">--</span>
+      </div>
+      <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 100px; font-size: 0.75rem; font-weight: 800;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="cpu" aria-hidden="true" size="14" class="lucide lucide-cpu"><path d="M12 20v2"></path><path d="M12 2v2"></path><path d="M17 20v2"></path><path d="M17 2v2"></path><path d="M2 12h2"></path><path d="M2 17h2"></path><path d="M2 7h2"></path><path d="M20 12h2"></path><path d="M20 17h2"></path><path d="M20 7h2"></path><path d="M7 20v2"></path><path d="M7 2v2"></path><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="8" y="8" width="8" height="8" rx="1"></rect></svg>
+        <span id="confidence-text">CALCULATING...</span>
+      </div>
+    </div>
+    <div class="card-title">
+      <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="activity" aria-hidden="true" class="lucide lucide-activity"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path></svg> SIGNAL STRENGTH</span>
+      <span id="signal-strength-text" style="font-family: 'JetBrains Mono';">0%</span>
+    </div>
+    <div class="signal-meter">
+      <div class="signal-fill" id="signal-bar" style="width: 0%"></div>
+    </div>
+    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+      <div style="flex: 1;">
+        <span class="strategy-tag" id="regime-display">NEUTRAL</span>
+      </div>
+      <div style="flex: 1; text-align: right;">
+        <span class="regime-badge" id="strategy-display">ADAPTIVE</span>
+      </div>
+    </div>
+    <div class="card-title"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="zap" aria-hidden="true" class="lucide lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"></path></svg> LIVE DATA FEED</span></div>
+    <div id="results-feed"></div>
+  </section>
+  <section id="page-history" class="page">
+    <div class="card-title">
+      <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="history" aria-hidden="true" class="lucide lucide-history"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path><path d="M12 7v5l4 2"></path></svg> PREDICTION LOGS</span>
+      <div style="display:flex;gap:6px;align-items:center;">
+        <span id="history-count" style="font-size:0.6rem;color:var(--text-dim);font-weight:800;">0/9999</span>
+        <button class="small-clear-btn" style="background:#EEF2FF;color:#4F46E5;border:none;padding:6px 10px;border-radius:10px;font-size:0.65rem;font-weight:800;cursor:pointer;" onclick="app.exportHistoryPDF()">PDF</button>
+        <button class="small-clear-btn" style="background:#FEE2E2;color:#EF4444;border:none;padding:6px 10px;border-radius:10px;font-size:0.65rem;font-weight:800;cursor:pointer;" onclick="app.clearHistory()">CLEAR</button>
+      </div>
+    </div>
+    <div id="history-feed"></div>
+  </section>
+  <section id="page-stats" class="page">
+    <div class="card-title"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="bar-chart" aria-hidden="true" class="lucide lucide-bar-chart"><path d="M5 21v-6"></path><path d="M12 21V9"></path><path d="M19 21V3"></path></svg> PERFORMANCE STATS</span></div>
+    <div style="background: white; border-radius: 24px; padding: 20px; border: 1px solid #F1F5F9; box-shadow: var(--shadow);">
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="value" id="stats-wins">0</div>
+          <div class="label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trophy" aria-hidden="true" size="12" class="lucide lucide-trophy"><path d="M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978"></path><path d="M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978"></path><path d="M18 9h1.5a1 1 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"></path><path d="M6 9H4.5a1 1 0 0 1 0-5H6"></path></svg> WINS</div>
+        </div>
+        <div class="stat-box">
+          <div class="value" id="stats-losses">0</div>
+          <div class="label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="shield" aria-hidden="true" size="12" class="lucide lucide-shield"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg> LOSSES</div>
+        </div>
+        <div class="stat-box">
+          <div class="value" id="stats-jackpots">0</div>
+          <div class="label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="crown" aria-hidden="true" size="12" class="lucide lucide-crown"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"></path><path d="M5 21h14"></path></svg> JACKPOTS</div>
+        </div>
+        <div class="stat-box">
+          <div class="value" id="stats-accuracy">0.0%</div>
+          <div class="label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="target" aria-hidden="true" size="12" class="lucide lucide-target"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg> ACCURACY</div>
+        </div>
+        <div class="stat-box">
+          <div class="value" id="stats-total">0</div>
+          <div class="label">TOTAL SETTLED</div>
+        </div>
+        <div class="stat-box">
+          <div class="value" id="stats-current-streak">0</div>
+          <div class="label">CURRENT STREAK</div>
+        </div>
+      </div>
+      <div style="margin-top: 20px;">
+        <div class="info-row">
+          <span class="info-label">Win Streak</span>
+          <span class="info-value" id="win-streak">0</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Loss Streak</span>
+          <span class="info-value" id="loss-streak">0</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Active Engines</span>
+          <span class="info-value" id="active-engines">0/10</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="page-info" class="page">
+    <div class="card-title"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="info" aria-hidden="true" class="lucide lucide-info"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg> SYSTEM INFORMATION</span></div>
+    <div style="background: white; border-radius: 24px; padding: 10px 20px; margin-bottom: 20px; border: 1px solid #F1F5F9; box-shadow: var(--shadow);">
+      <div class="info-row">
+        <span class="info-label">System Version</span>
+        <span class="info-value" style="color: var(--primary);">PANDIA VIP v4.0</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Engine Version</span>
+        <span class="info-value">Flexi V8 Dominator</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">System Time</span>
+        <span class="info-value" id="info-server-time">3:38:45 am</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">API Status</span>
+        <span class="info-value" id="api-status">○ Disconnected</span>
+      </div>
+    </div>
+    <div style="background: white; border-radius: 24px; padding: 20px; margin-bottom: 20px; border: 1px solid #F1F5F9;">
+      <h3 style="font-size: 1rem; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="cpu" aria-hidden="true" style="color: var(--primary);" class="lucide lucide-cpu"><path d="M12 20v2"></path><path d="M12 2v2"></path><path d="M17 20v2"></path><path d="M17 2v2"></path><path d="M2 12h2"></path><path d="M2 17h2"></path><path d="M2 7h2"></path><path d="M20 12h2"></path><path d="M20 17h2"></path><path d="M20 7h2"></path><path d="M7 20v2"></path><path d="M7 2v2"></path><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="8" y="8" width="8" height="8" rx="1"></rect></svg> AI Engines
+      </h3>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+        <span class="strategy-tag">Transitional</span>
+        <span class="strategy-tag">Volatility</span>
+        <span class="strategy-tag">Acceleration</span>
+        <span class="strategy-tag">Smart Streak</span>
+        <span class="strategy-tag">Deep Memory</span>
+        <span class="strategy-tag">Quantum</span>
+        <span class="strategy-tag">Fibonacci</span>
+        <span class="strategy-tag">Wavelet</span>
+        <span class="strategy-tag">Markov</span>
+        <span class="strategy-tag">Neural Net</span>
+      </div>
+    </div>
+    <div style="background:white;border-radius:24px;padding:16px 20px;margin-bottom:20px;border:1px solid #F1F5F9;">
+  <div class="info-row" style="border-bottom:none;padding:4px 0;">
+    <span class="info-label">Collector</span>
+    <span class="info-value" id="collector-status">Server collector enabled</span>
+  </div>
+</div>
+<div class="dev-contact">
+      <a href="https://t.me/BLbhai1" class="dev-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="send" aria-hidden="true" size="14" class="lucide lucide-send"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"></path><path d="m21.854 2.147-10.94 10.939"></path></svg> Contact Dev
+      </a>
+      <a href="https://t.me/BLbhai1" class="dev-btn" style="border-color: var(--secondary); color: var(--secondary);">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="users" aria-hidden="true" size="14" class="lucide lucide-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><path d="M16 3.128a4 4 0 0 1 0 7.744"></path><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><circle cx="9" cy="7" r="4"></circle></svg> Community
+      </a>
+    </div>
+    <button class="btn-exit" onclick="app.resetData()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="refresh-cw" aria-hidden="true" class="lucide lucide-refresh-cw"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M8 16H3v5"></path></svg> RESET ALL DATA
+    </button>
+  </section>
+  <nav class="nav-bar">
+    <a class="nav-item active" onclick="app.nav('home', this)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="home" aria-hidden="true" class="lucide lucide-home"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>HOME</a>
+    <a class="nav-item" onclick="app.nav('history', this)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="history" aria-hidden="true" class="lucide lucide-history"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path><path d="M12 7v5l4 2"></path></svg>HISTORY</a>
+    <a class="nav-item" onclick="app.nav('stats', this)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="bar-chart" aria-hidden="true" class="lucide lucide-bar-chart"><path d="M5 21v-6"></path><path d="M12 21V9"></path><path d="M19 21V3"></path></svg>STATS</a>
+    <a class="nav-item" onclick="app.nav('info', this)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="info" aria-hidden="true" class="lucide lucide-info"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>INFO</a>
+  </nav>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  // ==================== FLEXI V8 DOMINATOR ENGINE ====================
+  class FlexiV8Engine {
+  constructor() {
+  this.models = this.initializeModels();
+  this.winStreak = 0;
+  this.lossStreak = 0;
+  this.lastPrediction = null;
+  this.rewardMatrix = { BIG: { BIG: 0, SMALL: 0 }, SMALL: { BIG: 0, SMALL: 0 } };
+  this.regime = "NEUTRAL";
+  this.fibonacciSequence = [1, 1, 2, 3, 5, 8, 13, 21, 34];
+  this.consecutiveCorrect = 0;
+  this.consecutiveWrong = 0;
+  this.patternMemory = [];
+  }
+  initializeModels() {
+  return {
+  transitionalImbalance: { weight: 1.2, locked: false, name: 'Transitional', success: 0, total: 0 },
+  volatilityCompression: { weight: 1.1, locked: false, name: 'Volatility', success: 0, total: 0 },
+  accelerationEngine: { weight: 1.15, locked: false, name: 'Acceleration', success: 0, total: 0 },
+  smartStreak: { weight: 1.25, locked: false, name: 'Smart Streak', success: 0, total: 0 },
+  deepMemoryScanner: { weight: 1.3, locked: false, name: 'Deep Memory', success: 0, total: 0 },
+  quantumHarmonic: { weight: 1.2, locked: false, name: 'Quantum', success: 0, total: 0 },
+  fibonacciPredictor: { weight: 1.15, locked: false, name: 'Fibonacci', success: 0, total: 0 },
+  waveletAnalyzer: { weight: 1.1, locked: false, name: 'Wavelet', success: 0, total: 0 },
+  markovChain: { weight: 1.2, locked: false, name: 'Markov', success: 0, total: 0 },
+  neuralEnsemble: { weight: 1.3, locked: false, name: 'Neural Net', success: 0, total: 0 }
+  };
+  }
+  getNumbers(history) {
+  return history.map(h => typeof h === "object" ? parseInt(h.number) : parseInt(h));
+  }
+  getOutcomes(history) {
+  return this.getNumbers(history).map(n => n >= 5 ? "BIG" : "SMALL");
+  }
+  calculateVolatility(numbers) {
+  if (numbers.length < 10) return 0.5;
+  const returns = [];
+  for (let i = 1; i < numbers.length; i++) {
+  returns.push(Math.abs(numbers[i] - numbers[i-1]));
+  }
+  const mean = returns.reduce((a, b) => a + b, 0) / returns.length;
+  const variance = returns.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / returns.length;
+  return Math.min(1, Math.sqrt(variance) / 5);
+  }
+  detectRegime(history) {
+  const outcomes = this.getOutcomes(history);
+  const numbers = this.getNumbers(history);
+  if (outcomes.length < 15) return "NEUTRAL";
+  let alternations = 0;
+  for (let i = 1; i < 15; i++)
+  if (outcomes[i] !== outcomes[i-1]) alternations++;
+  const bigCount = outcomes.slice(0, 15).filter(x => x === "BIG").length;
+  const volatility = this.calculateVolatility(numbers);
+  const trendStrength = Math.abs(bigCount - 7.5) / 7.5;
+  if (volatility > 0.7) return "HIGH_VOLATILITY";
+  if (alternations >= 12) return "CHOPPY";
+  if (trendStrength > 0.6) return bigCount > 7.5 ? "BULL_TREND" : "BEAR_TREND";
+  if (alternations <= 5) return "SIDEWAYS";
+  return "NEUTRAL";
+  }
+  applyRegimeWeightLock() {
+  Object.values(this.models).forEach(m => m.locked = false);
+  const regimeMultipliers = {
+  "BULL_TREND": { smartStreak: 1.5, neuralEnsemble: 1.3 },
+  "BEAR_TREND": { smartStreak: 1.5, markovChain: 1.3 },
+  "CHOPPY": { transitionalImbalance: 1.4, quantumHarmonic: 1.4 },
+  "HIGH_VOLATILITY": { volatilityCompression: 1.5, waveletAnalyzer: 1.4 },
+  "SIDEWAYS": { markovChain: 1.4, transitionalImbalance: 1.3 },
+  "NEUTRAL": { neuralEnsemble: 1.2, quantumHarmonic: 1.2 }
+  };
+  const multipliers = regimeMultipliers[this.regime] || {};
+  Object.entries(multipliers).forEach(([model, mult]) => {
+  if (this.models[model]) {
+  this.models[model].weight *= mult;
+  this.models[model].locked = true;
+  }
+  });
+  }
+  transitionalImbalance(history) {
+  const o = this.getOutcomes(history);
+  if (o.length < 8) return null;
+  const last8 = o.slice(0, 8);
+  let alt = 0;
+  for (let i = 1; i < 8; i++) if (last8[i] !== last8[i-1]) alt++;
+  const big = last8.filter(x => x === "BIG").length;
+  const small = 8 - big;
+  if (alt >= 5 && Math.abs(big - small) >= 2) {
+  const prediction = big > small ? "BIG" : "SMALL";
+  const confidence = 0.65 + (Math.abs(big - small) * 0.05);
+  return { prediction, confidence: Math.min(confidence, 0.85) };
+  }
+  return null;
+  }
+  volatilityCompression(history) {
+  const n = this.getNumbers(history);
+  if (n.length < 8) return null;
+  const last7 = n.slice(0, 7);
+  const range = Math.max(...last7) - Math.min(...last7);
+  const volatility = this.calculateVolatility(n);
+  if (range <= 4 || volatility < 0.3) {
+  const direction = n[0] > n[3] ? "BIG" : "SMALL";
+  return { prediction: direction, confidence: 0.72 };
+  }
+  return null;
+  }
+  accelerationEngine(history) {
+  const n = this.getNumbers(history);
+  if (n.length < 6) return null;
+  const velocities = [];
+  for (let i = 1; i < 5; i++) {
+  velocities.push(n[i-1] - n[i]);
+  }
+  const acceleration = velocities[0] - velocities[1];
+  const jerk = velocities[1] - velocities[2];
+  if (Math.abs(acceleration) > 2 || Math.abs(jerk) > 3) {
+  const direction = (acceleration + jerk) > 0 ? "BIG" : "SMALL";
+  return { prediction: direction, confidence: 0.68 };
+  }
+  return null;
+  }
+  smartStreak(history) {
+  const o = this.getOutcomes(history);
+  if (o.length < 5) return null;
+  let streak = 1;
+  for (let i = 1; i < o.length; i++) {
+  if (o[i] === o[0]) streak++; else break;
+  }
+  if (streak >= 3) {
+  const streakProb = 0.5 + (streak * 0.05);
+  return { prediction: o[0], confidence: Math.min(streakProb, 0.85) };
+  }
+  return null;
+  }
+  deepMemoryScanner(history) {
+  const outcomes = this.getOutcomes(history);
+  if (outcomes.length < 30) return null;
+  const recentPattern = outcomes.slice(0, 4).join("");
+  let nextResults = [];
+  for (let i = 4; i < outcomes.length - 4; i++) {
+  const segment = outcomes.slice(i, i + 4).join("");
+  if (segment === recentPattern) {
+  nextResults.push(outcomes[i + 4]);
+  }
+  }
+  if (nextResults.length >= 3) {
+  const big = nextResults.filter(x => x === "BIG").length;
+  const small = nextResults.length - big;
+  const confidence = 0.6 + (Math.abs(big - small) * 0.05);
+  return {
+  prediction: big > small ? "BIG" : "SMALL",
+  confidence: Math.min(confidence, 0.9)
+  };
+  }
+  return null;
+  }
+  quantumHarmonic(history) {
+  const numbers = this.getNumbers(history);
+  if (numbers.length < 12) return null;
+  const recent = numbers.slice(0, 12);
+  const differences = [];
+  for (let i = 1; i < recent.length; i++) {
+  differences.push(recent[i] - recent[i-1]);
+  }
+  const harmonicSum = differences.reduce((a, b) => a + Math.abs(b), 0);
+  const harmonicMean = harmonicSum / differences.length;
+  if (harmonicMean > 3) {
+  const lastDiff = differences[0];
+  const prediction = Math.abs(lastDiff) > 2 ?
+  (lastDiff > 0 ? "BIG" : "SMALL") :
+  (recent[0] > 4.5 ? "BIG" : "SMALL");
+  return { prediction, confidence: 0.65 + (harmonicMean * 0.05) };
+  }
+  return null;
+  }
+  fibonacciPredictor(history) {
+  const numbers = this.getNumbers(history);
+  if (numbers.length < 20) return null;
+  const recent = numbers.slice(0, 8);
+  let patternFound = false;
+  let prediction = null;
+  for (let i = 0; i < this.fibonacciSequence.length - 3; i++) {
+  const pattern = [];
+  for (let j = 0; j < 3; j++) {
+  if (i + j < this.fibonacciSequence.length) {
+  pattern.push(this.fibonacciSequence[i + j]);
+  }
+  }
+  let matches = 0;
+  for (let j = 0; j < Math.min(3, recent.length - 1); j++) {
+  const diff = Math.abs(recent[j] - recent[j+1]);
+  if (pattern.includes(Math.round(diff))) matches++;
+  }
+  if (matches >= 2) {
+  patternFound = true;
+  const nextFib = this.fibonacciSequence[i + 3] || 8;
+  const lastNum = recent[0];
+  prediction = (lastNum + nextFib) > 4.5 ? "BIG" : "SMALL";
+  break;
+  }
+  }
+  if (patternFound) return { prediction, confidence: 0.7 };
+  return null;
+  }
+  waveletAnalyzer(history) {
+  const numbers = this.getNumbers(history);
+  if (numbers.length < 16) return null;
+  const scales = [2, 4, 8];
+  const patterns = [];
+  scales.forEach(scale => {
+  if (numbers.length >= scale * 2) {
+  const pattern1 = numbers.slice(0, scale).join('');
+  const pattern2 = numbers.slice(scale, scale * 2).join('');
+  if (pattern1 === pattern2) {
+  patterns.push({
+  scale,
+  direction: numbers[0] > numbers[scale] ? "BIG" : "SMALL"
+  });
+  }
+  }
+  });
+  if (patterns.length > 0) {
+  const bigCount = patterns.filter(p => p.direction === "BIG").length;
+  const prediction = bigCount > patterns.length / 2 ? "BIG" : "SMALL";
+  return { prediction, confidence: 0.65 + (patterns.length * 0.05) };
+  }
+  return null;
+  }
+  markovChain(history) {
+  const outcomes = this.getOutcomes(history);
+  if (outcomes.length < 30) return null;
+  const transitions = {};
+  for (let i = 0; i < outcomes.length - 3; i++) {
+  const state = outcomes.slice(i, i + 3).join('');
+  const next = outcomes[i + 3];
+  if (!transitions[state]) transitions[state] = { BIG: 0, SMALL: 0 };
+  transitions[state][next]++;
+  }
+  const currentState = outcomes.slice(0, 3).join('');
+  const possible = transitions[currentState];
+  if (possible && (possible.BIG + possible.SMALL) > 5) {
+  const total = possible.BIG + possible.SMALL;
+  const bigProb = possible.BIG / total;
+  if (Math.abs(bigProb - 0.5) > 0.2) {
+  return {
+  prediction: bigProb > 0.5 ? "BIG" : "SMALL",
+  confidence: 0.6 + (Math.abs(bigProb - 0.5) * 0.5)
+  };
+  }
+  }
+  return null;
+  }
+  neuralEnsemble(history) {
+  const numbers = this.getNumbers(history);
+  const outcomes = this.getOutcomes(history);
+  if (numbers.length < 25) return null;
+  const features = {
+  momentum: numbers.slice(0, 5).reduce((a, b, i) => a + b * (5 - i), 0) / 15,
+  volatility: this.calculateVolatility(numbers),
+  streak: this.winStreak - this.lossStreak,
+  recentBias: outcomes.slice(0, 10).filter(o => o === "BIG").length / 10
+  };
+  let bigScore = 0, smallScore = 0;
+  if (features.momentum > 4.5) bigScore += 0.7;
+  else if (features.momentum < 4.5) smallScore += 0.7;
+  if (features.volatility > 0.6) {
+  if (outcomes[0] === "BIG") smallScore += 0.5;
+  else bigScore += 0.5;
+  }
+  if (features.recentBias > 0.7) smallScore += 0.4;
+  if (features.recentBias < 0.3) bigScore += 0.4;
+  if (features.streak > 2) {
+  if (this.lastPrediction === "BIG") bigScore += 0.6;
+  else smallScore += 0.6;
+  }
+  const totalScore = bigScore + smallScore;
+  if (totalScore > 0) {
+  const bigProb = bigScore / totalScore;
+  if (Math.abs(bigProb - 0.5) > 0.15) {
+  return {
+  prediction: bigProb > 0.5 ? "BIG" : "SMALL",
+  confidence: 0.6 + (Math.abs(bigProb - 0.5) * 0.5)
+  };
+  }
+  }
+  return null;
+  }
+  selectOptimalNumber(history, prediction) {
+  const numbers = this.getNumbers(history);
+  if (numbers.length === 0) {
+  return prediction === 'BIG' ? 7 : 2;
+  }
+  const recent = numbers.slice(0, 20);
+  const freq = {};
+  recent.forEach(n => freq[n] = (freq[n] || 0) + 1);
+  if (prediction === 'BIG') {
+  const bigNums = [5, 6, 7, 8, 9];
+  let hotNumber = null, maxFreq = 0;
+  bigNums.forEach(n => {
+  if (freq[n] && freq[n] > maxFreq) {
+  maxFreq = freq[n];
+  hotNumber = n;
+  }
+  });
+  if (this.regime === "BULL_TREND" && hotNumber !== null) return hotNumber;
+  const candidates = bigNums.filter(n => recent.includes(n));
+  if (candidates.length > 0) {
+  candidates.sort((a, b) => (freq[a] || 0) - (freq[b] || 0));
+  return candidates[0];
+  }
+  return 7;
+  } else {
+  const smallNums = [0, 1, 2, 3, 4];
+  let hotNumber = null, maxFreq = 0;
+  smallNums.forEach(n => {
+  if (freq[n] && freq[n] > maxFreq) {
+  maxFreq = freq[n];
+  hotNumber = n;
+  }
+  });
+  if (this.regime === "BEAR_TREND" && hotNumber !== null) return hotNumber;
+  const candidates = smallNums.filter(n => recent.includes(n));
+  if (candidates.length > 0) {
+  candidates.sort((a, b) => (freq[a] || 0) - (freq[b] || 0));
+  return candidates[0];
+  }
+  return 2;
+  }
+  }
+  applyReinforcementBoost(prediction) {
+  const row = this.rewardMatrix[prediction];
+  const total = (row?.BIG || 0) + (row?.SMALL || 0);
+  if (total < 10) return 1;
+  const accuracy = (row[prediction] || 0) / total;
+  return 1 + (accuracy - 0.5) * 0.6;
+  }
+  streakHunterBoost(prediction) {
+  let boost = 1;
+  if (this.winStreak >= 2 && prediction === this.lastPrediction) {
+  boost += (this.winStreak * 0.1);
+  }
+  if (this.lossStreak >= 2) {
+  boost += (this.lossStreak * 0.15);
+  }
+  if (this.consecutiveCorrect >= 3) boost += 0.2;
+  if (this.consecutiveWrong >= 2) boost -= 0.1;
+  return Math.max(0.7, Math.min(1.5, boost));
+  }
+  predict(history) {
+  if (!history) history = [];
+  this.regime = this.detectRegime(history);
+  this.applyRegimeWeightLock();
+  const allEngines = [
+  ["transitionalImbalance", this.transitionalImbalance(history)],
+  ["volatilityCompression", this.volatilityCompression(history)],
+  ["accelerationEngine", this.accelerationEngine(history)],
+  ["smartStreak", this.smartStreak(history)],
+  ["deepMemoryScanner", this.deepMemoryScanner(history)],
+  ["quantumHarmonic", this.quantumHarmonic(history)],
+  ["fibonacciPredictor", this.fibonacciPredictor(history)],
+  ["waveletAnalyzer", this.waveletAnalyzer(history)],
+  ["markovChain", this.markovChain(history)],
+  ["neuralEnsemble", this.neuralEnsemble(history)]
+  ];
+  const engineOutputs = allEngines.filter(e => e[1] !== null);
+  if (engineOutputs.length === 0) {
+  const outcomes = this.getOutcomes(history);
+  let fallbackPred;
+  if (outcomes.length >= 5) {
+  const recentOutcomes = outcomes.slice(0, 5);
+  const bigCount = recentOutcomes.filter(o => o === "BIG").length;
+  fallbackPred = bigCount >= 3 ? "BIG" : "SMALL";
+  } else {
+  fallbackPred = Math.random() > 0.5 ? "BIG" : "SMALL";
+  }
+  return {
+  prediction: fallbackPred,
+  predictedNumber: fallbackPred === 'BIG' ? 7 : 2,
+  confidence: 0.5,
+  signalStrength: "65.0%",
+  regime: this.regime,
+  strategy: "FALLBACK",
+  enginesUsed: 0
+  };
+  }
+  let weightedBig = 0, weightedSmall = 0;
+  engineOutputs.forEach(([name, result]) => {
+  const baseWeight = this.models[name].weight;
+  const accuracyWeight = this.models[name].total > 0 ?
+  (this.models[name].success / this.models[name].total) : 0.5;
+  const combinedWeight = baseWeight * (0.7 + (accuracyWeight * 0.6));
+  if (result.prediction === "BIG") {
+  weightedBig += result.confidence * combinedWeight;
+  } else {
+  weightedSmall += result.confidence * combinedWeight;
+  }
+  });
+  let prediction = weightedBig > weightedSmall ? "BIG" : "SMALL";
+  let confidence = Math.max(weightedBig, weightedSmall) / (weightedBig + weightedSmall);
+  confidence *= this.applyReinforcementBoost(prediction);
+  confidence *= this.streakHunterBoost(prediction);
+  confidence = Math.min(confidence, 0.95);
+  const signalStrength = (confidence * 100).toFixed(1) + '%';
+  const predictedNumber = this.selectOptimalNumber(history, prediction);
+  this.lastPrediction = prediction;
+  const strategies = {
+  "BULL_TREND": "BULL_MASTER",
+  "BEAR_TREND": "BEAR_HUNTER",
+  "CHOPPY": "RANGE_PRO",
+  "HIGH_VOLATILITY": "VOL_SURFER",
+  "SIDEWAYS": "SIDEWAYS",
+  "NEUTRAL": "ADAPTIVE"
+  };
+  return {
+  prediction,
+  predictedNumber,
+  confidence,
+  signalStrength,
+  regime: this.regime,
+  strategy: strategies[this.regime] || "QUANTUM",
+  enginesUsed: engineOutputs.length
+  };
+  }
+  updateAfterResult(actualOutcome, predictionWasCorrect) {
+  if (!this.lastPrediction) return;
+  if (predictionWasCorrect) {
+  this.winStreak++;
+  this.lossStreak = 0;
+  this.consecutiveCorrect++;
+  this.consecutiveWrong = 0;
+  } else {
+  this.lossStreak++;
+  this.winStreak = 0;
+  this.consecutiveWrong++;
+  this.consecutiveCorrect = 0;
+  }
+  if (this.rewardMatrix[this.lastPrediction]) {
+  this.rewardMatrix[this.lastPrediction][actualOutcome]++;
+  }
+  Object.keys(this.models).forEach(key => {
+  if (predictionWasCorrect) {
+  this.models[key].success += 0.5;
+  }
+  this.models[key].total += 0.5;
+  });
+  }
+  getStats() {
+  return {
+  winStreak: this.winStreak,
+  lossStreak: this.lossStreak,
+  activeEngines: Object.values(this.models).filter(m => m.total > 5).length
+  };
+  }
+  }
+  // Initialize the engine
+  const engine = new FlexiV8Engine();
+  const app = {
+  apiEndpoint: '/api/latest',
+  history: JSON.parse(localStorage.getItem('zy_history_v4') || '[]').slice(0, 9999),
+  currentPeriod: null,
+  lastResultData: null,
+  wins: 0,
+  losses: 0,
+  jackpots: 0,
+  lastCheckedPeriod: null,
+  init() {
+  lucide.createIcons();
+  this.loadStats();
+  this.history = Array.isArray(this.history) ? this.history.slice(0, 9999) : [];
+  this.recalculateStatsFromHistory(); // Recalculate from saved history and restore streaks
+  this.startClock();
+  this.fetchData();
+  this.updateStatsDisplay();
+  },
+  loadStats() {
+  const saved = JSON.parse(localStorage.getItem('zy_stats') || '{"wins":0,"losses":0,"jackpots":0}');
+  this.wins = saved.wins || 0;
+  this.losses = saved.losses || 0;
+  this.jackpots = saved.jackpots || 0;
+  },
+  getSettledHistory() {
+  return this.history.filter(item => item.status === 'win' || item.status === 'loss');
+  },
+  calculateStreaks() {
+  const settled = this.getSettledHistory();
+  let currentType = null, current = 0, maxWin = 0, maxLoss = 0;
+  for (const item of settled) {
+    if (item.status === 'win') {
+      currentType === 'win' ? current++ : (currentType = 'win', current = 1);
+      maxWin = Math.max(maxWin, current);
+    } else {
+      currentType === 'loss' ? current++ : (currentType = 'loss', current = 1);
+      maxLoss = Math.max(maxLoss, current);
+    }
+  }
+  return {
+    currentType, current,
+    currentWin: currentType === 'win' ? current : 0,
+    currentLoss: currentType === 'loss' ? current : 0,
+    maxWin, maxLoss
+  };
+  },
+  persistHistory() {
+  this.history = Array.isArray(this.history) ? this.history.slice(0, 9999) : [];
+  localStorage.setItem('zy_history_v4', JSON.stringify(this.history));
+  this.updateHistoryCount();
+  },
+  updateHistoryCount() {
+  const el = document.getElementById('history-count');
+  if (el) el.innerText = `${this.history.length}/9999`;
+  },
+  recalculateStatsFromHistory() {
+  // Recalculate wins/losses from history to ensure accuracy
+  let wins = 0, losses = 0, jackpots = 0;
+  this.history.forEach(item => {
+  if (item.status === 'win') {
+  wins++;
+  if (item.isJackpot) jackpots++;
+  } else if (item.status === 'loss') {
+  losses++;
+  }
+  });
+  this.wins = wins;
+  this.losses = losses;
+  this.jackpots = jackpots;
+  const streaks = this.calculateStreaks();
+  engine.winStreak = streaks.currentWin;
+  engine.lossStreak = streaks.currentLoss;
+  this.saveStats();
+  this.persistHistory();
+  },
+  saveStats() {
+  localStorage.setItem('zy_stats', JSON.stringify({
+  wins: this.wins,
+  losses: this.losses,
+  jackpots: this.jackpots
+  }));
+  },
+  showNotification(message, type = 'info') {
+  const notif = document.getElementById('notification');
+  notif.textContent = message;
+  notif.className = 'notification show';
+  if (type === 'win') notif.classList.add('win');
+  if (type === 'loss') notif.classList.add('loss');
+  if (type === 'jackpot') notif.classList.add('jackpot');
+  setTimeout(() => {
+  notif.classList.remove('show');
+  }, 3000);
+  },
+  resetData() {
+  if (confirm("Reset all prediction data? This cannot be undone.")) {
+  this.history = [];
+  this.wins = 0;
+  this.losses = 0;
+  this.jackpots = 0;
+  engine.winStreak = 0;
+  engine.lossStreak = 0;
+  this.saveHistory();
+  this.saveStats();
+  this.updateStatsDisplay();
+  this.renderHistory();
+  this.showNotification('All data has been reset', 'info');
+  }
+  },
+  nav(pageId, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(`page-${pageId}`).classList.add('active');
+  el.classList.add('active');
+  if (pageId === 'history') this.renderHistory();
+  if (pageId === 'stats') this.updateStatsDisplay();
+  lucide.createIcons();
+  },
+  startClock() {
+  setInterval(() => {
+  const now = new Date();
+  const remaining = 60 - now.getSeconds();
+  document.getElementById('timer-text').innerText = remaining;
+  document.getElementById('info-server-time').innerText = now.toLocaleTimeString();
+  document.getElementById('timer-bar').style.strokeDashoffset = 226 - (remaining / 60) * 226;
+  if (remaining === 55) this.runNeuralEngine();
+  if (remaining === 59) this.fetchData();
+  }, 1000);
+  },
+  async fetchData() {
+  try {
+  const response = await fetch(`${this.apiEndpoint}?ts=${Date.now()}`);
+  const json = await response.json();
+  const list = json.data?.list || [];
+  if (list.length > 0) {
+  this.lastResultData = list;
+  const latestPeriod = list[0].issueNumber;
+  // Check for new period to settle predictions
+  if (this.lastCheckedPeriod && latestPeriod !== this.lastCheckedPeriod) {
+  this.settlePredictions(list);
+  }
+  this.lastCheckedPeriod = latestPeriod;
+  this.currentPeriod = (BigInt(list[0].issueNumber) + 1n).toString();
+  document.getElementById('period-display').innerText = this.currentPeriod.slice(-5);
+  document.getElementById('api-status').innerHTML = '● Connected';
+  this.processResults(list);
+  }
+  } catch (e) {
+  console.error("API error:", e);
+  document.getElementById('api-status').innerHTML = '○ Disconnected';
+  }
+  },
+  processResults(list) {
+  document.getElementById('results-feed').innerHTML = list.slice(0, 10).map(item => {
+  const num = parseInt(item.number);
+  return `
+  <div class="result-item">
+    <span class="res-period">${item.issueNumber}</span>
+    <span class="res-num">${item.number}</span>
+    <span class="badge" style="background:${num >= 5 ? '#EEF2FF' : '#ECFEFF'}; color:${num >= 5 ? '#4F46E5' : '#0891B2'}">${num >= 5 ? 'BIG' : 'SMALL'}</span>
+  </div>
+  `}).join('');
+  },
+  runNeuralEngine() {
+  if (!this.lastResultData) {
+  const pred = engine.predict([]);
+  this.displayPrediction(pred);
+  return;
+  }
+  const pred = engine.predict(this.lastResultData);
+  this.displayPrediction(pred);
+  // Only add to pending if not already there for this period
+  const existingPending = this.history.find(h => h.period === this.currentPeriod && h.status === 'pending');
+  if (!existingPending) {
+  this.history.unshift({
+  period: this.currentPeriod,
+  pick: pred.prediction,
+  number: pred.predictedNumber,
+  status: 'pending',
+  time: new Date().toLocaleTimeString(),
+  signal: pred.signalStrength,
+  strategy: pred.strategy,
+  regime: pred.regime
+  });
+  this.saveHistory();
+  this.showNotification(`New Prediction: ${pred.prediction} ${pred.predictedNumber}`, 'info');
+  }
+  },
+  displayPrediction(pred) {
+  document.getElementById('predict-val').innerText = pred.prediction;
+  document.getElementById('predict-number').innerText = pred.predictedNumber;
+  document.getElementById('confidence-text').innerText = `CONFIDENCE: ${(pred.confidence * 100).toFixed(0)}% | ${pred.enginesUsed}/10 ENGINES`;
+  document.getElementById('signal-strength-text').innerText = pred.signalStrength;
+  document.getElementById('signal-bar').style.width = pred.signalStrength;
+  document.getElementById('regime-display').innerText = pred.regime;
+  document.getElementById('strategy-display').innerText = pred.strategy;
+  const card = document.getElementById('predict-card');
+  card.style.background = pred.prediction === 'BIG'
+  ? 'linear-gradient(135deg, #2563eb 0%, #7c3aed 100%)'
+  : 'linear-gradient(135deg, #dc2626 0%, #ea580c 100%)';
+  },
+  settlePredictions(results) {
+  let updated = false;
+  this.history.forEach(item => {
+  if (item.status === 'pending') {
+  const match = results.find(r => String(r.issueNumber) === String(item.period));
+  if (match) {
+  const actualNum = parseInt(match.number);
+  const actual = actualNum >= 5 ? "BIG" : "SMALL";
+  const isWin = item.pick === actual;
+  const isJackpot = isWin && item.number === actualNum;
+  item.status = isWin ? 'win' : 'loss';
+  item.actual = actual;
+  item.actualNumber = actualNum;
+  item.isJackpot = isJackpot;
+  engine.updateAfterResult(actual, isWin);
+  if (isJackpot) {
+  this.jackpots++;
+  this.wins++;
+  this.showNotification(`🎉 JACKPOT! ${item.pick} ${item.number} exact match!`, 'jackpot');
+  } else if (isWin) {
+  this.wins++;
+  this.showNotification(`✅ WIN! ${item.pick} was correct!`, 'win');
+  } else {
+  this.losses++;
+  this.showNotification(`❌ LOSS! Actual was ${actual} ${actualNum}`, 'loss');
+  }
+  updated = true;
+  console.log(`Period ${item.period}: Predicted ${item.pick} ${item.number}, Actual ${actual} ${actualNum} - ${isWin ? 'WIN' : 'LOSS'}${isJackpot ? ' JACKPOT!' : ''}`);
+  }
+  }
+  });
+  if (updated) {
+  this.saveHistory();
+  this.recalculateStatsFromHistory();
+  this.saveStats();
+  this.updateStatsDisplay();
+  if (document.getElementById('page-history').classList.contains('active')) {
+  this.renderHistory();
+  }
+  }
+  },
+  renderHistory() {
+  const feed = document.getElementById('history-feed');
+  this.updateHistoryCount();
+  if (this.history.length === 0) {
+  feed.innerHTML = `<p style="text-align:center; padding:40px; color:var(--text-dim);">No predictions yet. Wait for next round.</p>`;
+  return;
+  }
+  feed.innerHTML = this.history.slice(0, 30).map(h => {
+  let badgeClass = 'badge-pending';
+  let statusIcon = '⏳';
+  if (h.status === 'win') {
+  badgeClass = 'badge-win';
+  statusIcon = '✓';
+  } else if (h.status === 'loss') {
+  badgeClass = 'badge-loss';
+  statusIcon = '✗';
+  }
+  const jackpotStar = h.isJackpot ? '👑 ' : '';
+  return `
+  <div class="result-item">
+    <div>
+      <div class="res-period">${h.period} ${jackpotStar}</div>
+      <div style="font-size:0.6rem; color:var(--text-dim)">${h.time || ''}</div>
+      <div style="font-size:0.55rem; color:var(--text-dim)">${h.strategy || ''}</div>
+    </div>
+    <div style="text-align:center;">
+      <span style="font-weight:800; font-family:'JetBrains Mono'">${h.pick} ${h.number || ''}</span>
+      ${h.actual ? `<div style="font-size:0.6rem;">vs ${h.actual} ${h.actualNumber}</div>` : ''}
+    </div>
+    ${h.status === 'pending' ?
+    `<span class="rotating-emoji">⏳</span>` :
+    `<span class="badge ${badgeClass}">${statusIcon} ${h.status}</span>`
+    }
+  </div>
+  `}).join('');
+  lucide.createIcons();
+  },
+  updateStatsDisplay() {
+  const total = this.wins + this.losses;
+  const accuracy = total > 0 ? ((this.wins / total) * 100).toFixed(1) : '0.0';
+  const streaks = this.calculateStreaks();
+  engine.winStreak = streaks.currentWin;
+  engine.lossStreak = streaks.currentLoss;
+  const currentLabel = streaks.current > 0
+    ? `${streaks.current} ${streaks.currentType.toUpperCase()}`
+    : '0';
+  document.getElementById('stats-wins').innerText = this.wins;
+  document.getElementById('stats-losses').innerText = this.losses;
+  document.getElementById('stats-jackpots').innerText = this.jackpots;
+  document.getElementById('stats-accuracy').innerText = accuracy + '%';
+  document.getElementById('stats-total').innerText = total;
+  document.getElementById('stats-current-streak').innerText = currentLabel;
+  document.getElementById('win-streak').innerText = streaks.currentWin;
+  document.getElementById('loss-streak').innerText = streaks.currentLoss;
+  document.getElementById('active-engines').innerText = `${engine.getStats().activeEngines}/10`;
+  this.updateHistoryCount();
+  },
+  clearHistory() {
+  if (confirm("Clear all prediction history?")) {
+    this.history = [];
+    this.wins = 0;
+    this.losses = 0;
+    this.jackpots = 0;
+    engine.winStreak = 0;
+    engine.lossStreak = 0;
+    this.saveHistory();
+    this.saveStats();
+    this.renderHistory();
+    this.updateStatsDisplay();
+    this.showNotification('History cleared', 'info');
+  }
+  },
+  exportHistoryPDF() {
+  if (!this.history.length) {
+    this.showNotification('No history to export', 'info');
+    return;
+  }
+  if (!window.jspdf || !window.jspdf.jsPDF) {
+    this.showNotification('PDF library is still loading. Try again.', 'info');
+    return;
+  }
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+  const margin = 36, pageHeight = doc.internal.pageSize.getHeight();
+  const streaks = this.calculateStreaks();
+  const total = this.wins + this.losses;
+  const rate = total ? ((this.wins / total) * 100).toFixed(1) : '0.0';
+
+  doc.setFontSize(18);
+  doc.text('PANDIA VIP OWNER - Prediction History', margin, 42);
+  doc.setFontSize(9);
+  doc.text(`Exported: ${new Date().toLocaleString()}`, margin, 58);
+  doc.text(`Records: ${this.history.length}/9999`, margin, 72);
+  doc.text(`Wins: ${this.wins}   Losses: ${this.losses}   Win Rate: ${rate}%`, margin, 86);
+  doc.text(`Current Win Streak: ${streaks.currentWin}   Current Loss Streak: ${streaks.currentLoss}`, margin, 100);
+  doc.text(`Max Win Streak: ${streaks.maxWin}   Max Loss Streak: ${streaks.maxLoss}`, margin, 114);
+
+  let y = 138;
+  const cols = [36, 110, 205, 280, 350, 430];
+  const headers = ['Period', 'Prediction', 'Actual', 'Status', 'Time', 'Strategy'];
+  doc.setFontSize(8);
+  doc.setFont(undefined, 'bold');
+  headers.forEach((h, i) => doc.text(h, cols[i], y));
+  doc.setFont(undefined, 'normal');
+  y += 14;
+
+  this.history.forEach(h => {
+    if (y > pageHeight - 40) {
+      doc.addPage();
+      y = 40;
+      doc.setFont(undefined, 'bold');
+      headers.forEach((header, i) => doc.text(header, cols[i], y));
+      doc.setFont(undefined, 'normal');
+      y += 14;
+    }
+    const vals = [
+      String(h.period || '').slice(0,16),
+      `${h.pick || ''} ${h.number ?? ''}`.trim().slice(0,14),
+      h.actual ? `${h.actual} ${h.actualNumber ?? ''}`.trim().slice(0,14) : '-',
+      String(h.status || 'pending').slice(0,10),
+      String(h.time || '').slice(0,18),
+      String(h.strategy || '').slice(0,16)
+    ];
+    vals.forEach((v, i) => doc.text(v, cols[i], y));
+    y += 12;
+  });
+
+  doc.save(`PANDIA_history_${new Date().toISOString().slice(0,10)}.pdf`);
+  this.showNotification('PDF exported successfully', 'win');
+  },
+  saveHistory() {
+  this.persistHistory();
+  }
+  };
+  window.onload = () => app.init();
+</script>
+</body></html>
